@@ -69,7 +69,7 @@ npm run start
 * [Bundle Analysis: explore bundle](TBD)
 * [Bundle Analysis: router lazy loading](TBD)
 * [Defer](./exercises/defer.md)
-* [SSR: Setup](TBD)
-* [SSR: Caching](TBD)
-* [SSR: TBD](TBD)
+* [SSR: Setup & Gotchas](exercises/ssr%20-%20setup%20%26%20gotchas.md)
+* [SSR: Caching & Server Timing](exercises/ssr-simple-caching-and-server-timing.md)
+* [SSR: Server Routes Configuration](exercises/ssr-server-routes-config.md)
 
