@@ -1,9 +1,8 @@
-# DOM Access Optimisation - Forced Reflow
+# CSS Performance - Layout Thrashing
 
-In this exercise you will learn what forced reflows are, what causes and how to
-avoid them.
+In this exercise you will learn what layout thrashing is, what causes and how to avoid them.
 
-## Prepare perf-playground
+## 0. Prepare perf-playground
 
 In order to solve the tasks for this exercise, please run the [perf-playground repository](https://github.com/push-based/perf-playground).
 
@@ -40,7 +39,7 @@ Hit the `Animate slow` button in order to trigger the already implemented soluti
 A duration counter will give you information about the execution time of the
 animation.
 
-## Measure current state
+## 1. Measure current state
 
 Open your dev tools with `F12` or `Ctrl + Shift + I` and create a recording of the
 animation.
@@ -59,7 +58,7 @@ to execute.
 The dev tools will also give you warnings about potential performance bottlenecks.
 You should see multiple occurrences of `Forced Reflow` warnings.
 
-## Remove forced reflow
+## 2. Remove forced reflow
 
 Inspect the code of `ForcedReflowComponent` as this is the place where the 
 animation is implemented.
@@ -120,7 +119,7 @@ You should notice that both, the `long task` as well as the `forced reflows` are
 
 ![no-forced-reflow](images/dom-access/no-forced-reflow.png)
 
-## Bonus: Super fast calculation with compositor only properties
+## 3. Bonus: Super fast calculation with compositor only properties
 
 We've improved the animation quite a bit by getting rid of the forced reflows.
 There is still room for improvement, though. We can completely get rid of the need

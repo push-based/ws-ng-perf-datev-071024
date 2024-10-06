@@ -2,31 +2,24 @@ import { isPlatformBrowser } from '@angular/common';
 import {
   Directive,
   ElementRef,
-  Inject,
-  Output,
+  inject,
+  output,
   PLATFORM_ID,
 } from '@angular/core';
-import { RxActionFactory } from '@rx-angular/state/actions';
 import { filter, fromEvent, map } from 'rxjs';
-
-type Actions = { visible: boolean; onDestroy: void };
 
 @Directive({
   selector: '[elementVisible]',
-  providers: [RxActionFactory],
   standalone: true,
 })
 export class ElementVisibilityDirective {
-  signals = this.actionsF.create();
+  private platformId = inject(PLATFORM_ID);
+  private elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
 
-  @Output() elementVisible = this.signals.visible$;
+  elementVisible = output();
 
-  constructor(
-    private actionsF: RxActionFactory<Actions>,
-    private elementRef: ElementRef<HTMLElement>,
-    @Inject(PLATFORM_ID) platformId: Object
-  ) {
-    if (isPlatformBrowser(platformId)) {
+  constructor() {
+    if (isPlatformBrowser(this.platformId)) {
       fromEvent(document, 'scroll')
         .pipe(
           filter(() => !!document.scrollingElement),
@@ -34,12 +27,14 @@ export class ElementVisibilityDirective {
             const { scrollTop, clientHeight } = document.scrollingElement!;
             return (
               scrollTop + clientHeight + 100 >=
-              elementRef.nativeElement.offsetTop
+              this.elementRef.nativeElement.offsetTop
             );
           }),
-          filter(Boolean)
+          filter(Boolean),
         )
-        .subscribe(this.signals.visible);
+        .subscribe(() => {
+          this.elementVisible.emit();
+        });
     }
   }
 }

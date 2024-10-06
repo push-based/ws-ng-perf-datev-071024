@@ -12,7 +12,7 @@ how to optimize our applications runtime performance by using the `trackBy funct
 
 ![MovieSearchControlComponent](images/change-detection/movie-search-control.png)
 
-Apply the `dirty-checks` component to the template of the `MovieSearchControlComponent`. Add it inside of the `button`
+Apply the `dirty-check` component to the template of the `MovieSearchControlComponent`. Add it inside of the `button`
 element created for each search result.
 
 <details>
@@ -25,7 +25,7 @@ element created for each search result.
         (click)="selectMovie(movie)"
         *ngFor="let movie of movies;">
   
-  <dirty-checks></dirty-checks>
+  <dirty-check></dirty-check>
   
   <img [src]="movie.poster_path | movieImage" width="35" [alt]="movie.title">
   <span>{{ movie.title }}</span>
@@ -56,8 +56,10 @@ Apply it as input parameter to the `*ngFor`
 
 [TrackByFunction](https://angular.io/api/core/TrackByFunction)
 
+or convert the `*ngFor` to use the new control flow syntax `@for` which allows you to provide a `track` property directly in the template.
+
 <details>
-    <summary>TrackByFunction</summary>
+    <summary>TrackByFunction solution</summary>
 
 ```ts
 // movie-search-control.component.ts
@@ -76,6 +78,21 @@ trackMovie = (i: number, movie: MovieModel) => movie.id;
 
 </details>
 
+<details>
+    <summary>New @for syntax solution</summary>
+
+```html
+<!-- movie-search-control.component.html -->
+@for (movie of movies; track movie.id) {
+  <button class="movie-result"
+          (click)="selectMovie(movie)">
+    <!-- the template -->
+  </button>
+}
+```
+
+</details>
+
 Serve the application and repeat the interaction with the `MovieSearchControlComponent`. Watch the counter now actually
 updating instead of re-instantiating. Also use the `devtools` and inspect the `Elements`. You should now that the Nodes are
 getting updated now.
@@ -88,11 +105,11 @@ ng serve
 
 Since we have the same kind of issue in our `MovieSearchPageComponent`, lets go there and apply the same fixes as before.
 
-* apply the `dirty-checks` component so that you have visual feedback of your improvement
+* apply the `dirty-check` component so that you have visual feedback of your improvement
   * you probably need to dig into `MovieListComponent` since this is the place where the iteration happens
 * Repeat the interaction process, but perform it on the global movie search (top widget)
 * Inspect the counter & `devtools > Elements` tab
-* create a `TrackByFunction` and apply it to the `*ngFor`
+* create a `TrackByFunction` and apply it to the `*ngFor` or use the new `@for` syntax
 * repeat the interaction
 
 If you like, you can use the utility function `trackByProp` from `shared/utils/track-by.ts`
