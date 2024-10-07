@@ -3,7 +3,10 @@ import {
   withFetch,
   withInterceptors,
 } from '@angular/common/http';
-import { ApplicationConfig } from '@angular/core';
+import {
+  ApplicationConfig,
+  provideExperimentalZonelessChangeDetection,
+} from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideFastSVG } from '@push-based/ngx-fast-svg';
 
@@ -18,6 +21,7 @@ export const appConfig: ApplicationConfig = {
       url: (name: string) => `assets/svg-icons/${name}.svg`,
       defaultSize: '12',
     }),
+    provideExperimentalZonelessChangeDetection(),
     // provideClientHydration(withEventReplay()),
   ],
 };
