@@ -1,5 +1,6 @@
 import { UpperCasePipe } from '@angular/common';
 import {
+  ChangeDetectionStrategy,
   Component,
   computed,
   ElementRef,
@@ -95,6 +96,7 @@ import { MovieImagePipe } from '../movie-image.pipe';
       font-size: 2rem;
     }
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MovieCardComponent {
   index = input.required<number>();

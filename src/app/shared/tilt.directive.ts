@@ -1,4 +1,10 @@
-import { Directive, ElementRef, input } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Directive,
+  ElementRef,
+  inject,
+  input,
+} from '@angular/core';
 import { fromEvent, map, merge } from 'rxjs';
 
 @Directive({
@@ -13,6 +19,8 @@ export class TiltDirective {
 
   rotate = 'rotate(0deg)';
 
+  private cdRef = inject(ChangeDetectorRef);
+
   constructor(private elementRef: ElementRef<HTMLElement>) {
     const rotate$ = fromEvent<MouseEvent>(
       this.elementRef.nativeElement,
@@ -25,6 +33,7 @@ export class TiltDirective {
 
     merge(rotate$, reset$).subscribe((rotate) => {
       this.rotate = rotate;
+      // this.cdRef.markForCheck();
     });
   }
 
