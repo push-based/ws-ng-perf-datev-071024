@@ -45,23 +45,21 @@ will be to use the `NgZone#runOutsideAngular` method.
 private zone = inject(NgZone); // 👈️👈️👈️
 
 constructor() {
-  if (isPlatformBrowser(this.platformId)) {
-    this.zone.runOutsideAngular(() => { // 👈️👈️👈️
-      fromEvent(document, 'scroll')
-        .pipe(
-          filter(() => !!document.scrollingElement),
-          map(() => {
-            const { scrollTop, clientHeight } = document.scrollingElement!;
-            return (
-              scrollTop + clientHeight + 100 >=
-              this.elementRef.nativeElement.offsetTop
-            );
-          }),
-          filter(Boolean),
-        )
-        .subscribe(() => this.elementVisible.emit());
-    });
-  }
+  this.zone.runOutsideAngular(() => { // 👈️👈️👈️
+    fromEvent(document, 'scroll')
+      .pipe(
+        filter(() => !!document.scrollingElement),
+        map(() => {
+          const { scrollTop, clientHeight } = document.scrollingElement!;
+          return (
+            scrollTop + clientHeight + 100 >=
+            this.elementRef.nativeElement.offsetTop
+          );
+        }),
+        filter(Boolean),
+      )
+      .subscribe(() => this.elementVisible.emit());
+  });
 }
 ```
 
@@ -108,27 +106,25 @@ Use the `ngZone.run` method to wrap the `elementVisible.emit` event emission.
 private zone = inject(NgZone);
 
 constructor() {
-  if (isPlatformBrowser(this.platformId)) {
-    this.zone.runOutsideAngular(() => {
-      fromEvent(document, 'scroll')
-        .pipe(
-          filter(() => !!document.scrollingElement),
-          map(() => {
-            const { scrollTop, clientHeight } = document.scrollingElement!;
-            return (
-              scrollTop + clientHeight + 100 >=
-              this.elementRef.nativeElement.offsetTop
-            );
-          }),
-          filter(Boolean),
-        )
-        .subscribe(() => {
-          this.ngZone.run(() => { // 👈️👈️👈️
-            this.elementVisible.emit()
-          });
+  this.zone.runOutsideAngular(() => {
+    fromEvent(document, 'scroll')
+      .pipe(
+        filter(() => !!document.scrollingElement),
+        map(() => {
+          const { scrollTop, clientHeight } = document.scrollingElement!;
+          return (
+            scrollTop + clientHeight + 100 >=
+            this.elementRef.nativeElement.offsetTop
+          );
+        }),
+        filter(Boolean),
+      )
+      .subscribe(() => {
+        this.ngZone.run(() => { // 👈️👈️👈️
+          this.elementVisible.emit()
         });
-    });
-  }
+      });
+  });
 }
 ```
 
