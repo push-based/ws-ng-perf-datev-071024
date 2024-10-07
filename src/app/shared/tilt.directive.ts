@@ -33,7 +33,7 @@ export class TiltDirective {
 
     merge(rotate$, reset$).subscribe((rotate) => {
       this.rotate = rotate;
-      // this.cdRef.markForCheck();
+      this.cdRef.markForCheck();
     });
   }
 
