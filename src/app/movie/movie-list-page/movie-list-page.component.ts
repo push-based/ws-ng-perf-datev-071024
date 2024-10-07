@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { exhaustMap, Observable, scan, startWith, Subject } from 'rxjs';
 
 import { ElementVisibilityDirective } from '../../shared/cdk/element-visibility/element-visibility.directive';
+import { DirtyCheckComponent } from '../../shared/dirty-check.component';
 import { TMDBMovieModel } from '../../shared/model/movie.model';
 import { MovieService } from '../movie.service';
 import { MovieListComponent } from '../movie-list/movie-list.component';
@@ -10,11 +11,16 @@ import { MovieListComponent } from '../movie-list/movie-list.component';
 @Component({
   selector: 'movie-list-page',
   template: `
+    <dirty-check />
     <movie-list [movies]="movies" />
     <div (elementVisible)="paginate$.next()"></div>
   `,
   standalone: true,
-  imports: [MovieListComponent, ElementVisibilityDirective],
+  imports: [
+    MovieListComponent,
+    ElementVisibilityDirective,
+    DirtyCheckComponent,
+  ],
 })
 export class MovieListPageComponent {
   private activatedRoute = inject(ActivatedRoute);

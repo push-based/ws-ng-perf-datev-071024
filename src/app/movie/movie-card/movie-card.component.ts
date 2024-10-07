@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { fromEvent } from 'rxjs';
 
+import { DirtyCheckComponent } from '../../shared/dirty-check.component';
 import { TMDBMovieModel } from '../../shared/model/movie.model';
 import { TiltDirective } from '../../shared/tilt.directive';
 import { StarRatingComponent } from '../../ui/pattern/star-rating/star-rating.component';
@@ -17,9 +18,16 @@ import { MovieImagePipe } from '../movie-image.pipe';
 @Component({
   selector: 'movie-card',
   standalone: true,
-  imports: [StarRatingComponent, TiltDirective, UpperCasePipe, MovieImagePipe],
+  imports: [
+    StarRatingComponent,
+    TiltDirective,
+    UpperCasePipe,
+    MovieImagePipe,
+    DirtyCheckComponent,
+  ],
   template: `
     <div class="movie-card">
+      <dirty-check />
       <img
         tilt
         [tiltDegree]="5"

@@ -2,13 +2,19 @@ import { Component, input, output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FastSvgComponent } from '@push-based/ngx-fast-svg';
 
+import { DirtyCheckComponent } from '../../shared/dirty-check.component';
 import { TMDBMovieModel } from '../../shared/model/movie.model';
 import { MovieCardComponent } from '../movie-card/movie-card.component';
 
 @Component({
   selector: 'movie-list',
   standalone: true,
-  imports: [MovieCardComponent, FastSvgComponent, RouterLink],
+  imports: [
+    MovieCardComponent,
+    FastSvgComponent,
+    RouterLink,
+    DirtyCheckComponent,
+  ],
   template: `
     @for (movie of movies(); track movie.id) {
       <movie-card
