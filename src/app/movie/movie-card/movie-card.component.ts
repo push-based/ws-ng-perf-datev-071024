@@ -33,6 +33,8 @@ import { MovieImagePipe } from '../movie-image.pipe';
         tilt
         [tiltDegree]="5"
         class="movie-image"
+        [attr.loading]="index() < 1 ? 'eager' : 'lazy'"
+        [attr.fetchpriority]="index() < 1 ? 'high' : 'low'"
         [alt]="movie().title"
         [src]="movie().poster_path | movieImage: 780"
       />
