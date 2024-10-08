@@ -3,6 +3,7 @@ import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { FastSvgComponent } from '@push-based/ngx-fast-svg';
+import { RxLet } from '@rx-angular/template/let';
 
 import { MovieService } from '../movie/movie.service';
 import { TrackingService } from '../shared/tracking.service';
@@ -26,6 +27,7 @@ import { SideDrawerComponent } from '../ui/component/side-drawer/side-drawer.com
     FormsModule,
     DarkModeToggleComponent,
     AsyncPipe,
+    RxLet,
   ],
 })
 export class AppShellComponent {
