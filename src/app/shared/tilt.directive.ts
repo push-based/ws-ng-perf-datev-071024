@@ -13,7 +13,17 @@ export class TiltDirective {
 
   rotate = signal('rotate(0deg)');
 
+  middle = 0;
+
   constructor(private elementRef: ElementRef<HTMLElement>) {
+    const resizeObserver = new ResizeObserver((entries) => {
+      const width = entries[0].borderBoxSize[0].inlineSize;
+      this.middle =
+        this.elementRef.nativeElement.getBoundingClientRect().left + width / 2;
+    });
+
+    resizeObserver.observe(this.elementRef.nativeElement);
+
     const rotate$ = fromEvent<MouseEvent>(
       this.elementRef.nativeElement,
       'mouseenter',
@@ -42,9 +52,6 @@ export class TiltDirective {
    * returns 0 if entered from left, 1 if entered from right
    */
   determineDirection(pos: number): 0 | 1 {
-    const width = this.elementRef.nativeElement.clientWidth;
-    const middle =
-      this.elementRef.nativeElement.getBoundingClientRect().left + width / 2;
-    return pos > middle ? 1 : 0;
+    return pos > this.middle ? 1 : 0;
   }
 }

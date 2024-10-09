@@ -1,4 +1,4 @@
-import { UpperCasePipe } from '@angular/common';
+import { NgOptimizedImage, UpperCasePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -25,6 +25,7 @@ import { MovieImagePipe } from '../movie-image.pipe';
     UpperCasePipe,
     MovieImagePipe,
     DirtyCheckComponent,
+    NgOptimizedImage,
   ],
   template: `
     <div class="movie-card">
@@ -33,10 +34,13 @@ import { MovieImagePipe } from '../movie-image.pipe';
         tilt
         [tiltDegree]="5"
         class="movie-image"
-        [attr.loading]="index() < 1 ? 'eager' : 'lazy'"
-        [attr.fetchpriority]="index() < 1 ? 'high' : 'low'"
         [alt]="movie().title"
-        [src]="movie().poster_path | movieImage: 780"
+        [priority]="index() < 1"
+        width="100"
+        height="150"
+        ngSrcset="154w, 185w, 300w, 342w, 500w, 780w"
+        sizes="(max-width: 500px) 75vw, 15vw"
+        [ngSrc]="movie().poster_path"
       />
       <div class="movie-card-content">
         <div class="movie-card-title">{{ movie().title | uppercase }}</div>

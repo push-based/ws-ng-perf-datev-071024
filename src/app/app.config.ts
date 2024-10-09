@@ -1,3 +1,4 @@
+import { IMAGE_LOADER, ImageLoaderConfig } from '@angular/common';
 import {
   provideHttpClient,
   withFetch,
@@ -21,6 +22,12 @@ export const appConfig: ApplicationConfig = {
       url: (name: string) => `assets/svg-icons/${name}.svg`,
       defaultSize: '12',
     }),
+    {
+      provide: IMAGE_LOADER,
+      useValue: (config: ImageLoaderConfig) => {
+        return `https://image.tmdb.org/t/p/w${config.width ?? 300}${config.src}`;
+      },
+    },
     provideExperimentalZonelessChangeDetection(),
     // provideClientHydration(withEventReplay()),
   ],
