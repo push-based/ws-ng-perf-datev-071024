@@ -1,5 +1,6 @@
-import { UpperCasePipe } from '@angular/common';
+import { NgOptimizedImage, UpperCasePipe } from '@angular/common';
 import {
+  ChangeDetectionStrategy,
   Component,
   computed,
   ElementRef,
@@ -9,6 +10,7 @@ import {
 } from '@angular/core';
 import { fromEvent } from 'rxjs';
 
+import { DirtyCheckComponent } from '../../shared/dirty-check.component';
 import { TMDBMovieModel } from '../../shared/model/movie.model';
 import { TiltDirective } from '../../shared/tilt.directive';
 import { StarRatingComponent } from '../../ui/pattern/star-rating/star-rating.component';
@@ -17,15 +19,28 @@ import { MovieImagePipe } from '../movie-image.pipe';
 @Component({
   selector: 'movie-card',
   standalone: true,
-  imports: [StarRatingComponent, TiltDirective, UpperCasePipe, MovieImagePipe],
+  imports: [
+    StarRatingComponent,
+    TiltDirective,
+    UpperCasePipe,
+    MovieImagePipe,
+    DirtyCheckComponent,
+    NgOptimizedImage,
+  ],
   template: `
     <div class="movie-card">
+      <dirty-check />
       <img
         tilt
         [tiltDegree]="5"
         class="movie-image"
         [alt]="movie().title"
-        [src]="movie().poster_path | movieImage: 780"
+        [priority]="index() < 1"
+        width="100"
+        height="150"
+        ngSrcset="154w, 185w, 300w, 342w, 500w, 780w"
+        sizes="(max-width: 500px) 75vw, 15vw"
+        [ngSrc]="movie().poster_path"
       />
       <div class="movie-card-content">
         <div class="movie-card-title">{{ movie().title | uppercase }}</div>
@@ -87,6 +102,7 @@ import { MovieImagePipe } from '../movie-image.pipe';
       font-size: 2rem;
     }
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MovieCardComponent {
   index = input.required<number>();

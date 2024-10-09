@@ -1,19 +1,29 @@
-import { Directive, ElementRef, input } from '@angular/core';
+import { Directive, ElementRef, input, signal } from '@angular/core';
 import { fromEvent, map, merge } from 'rxjs';
 
 @Directive({
   selector: '[tilt]',
   standalone: true,
   host: {
-    '[style.transform]': 'rotate',
+    '[style.transform]': 'rotate()',
   },
 })
 export class TiltDirective {
   tiltDegree = input(5);
 
-  rotate = 'rotate(0deg)';
+  rotate = signal('rotate(0deg)');
+
+  middle = 0;
 
   constructor(private elementRef: ElementRef<HTMLElement>) {
+    const resizeObserver = new ResizeObserver((entries) => {
+      const width = entries[0].borderBoxSize[0].inlineSize;
+      this.middle =
+        this.elementRef.nativeElement.getBoundingClientRect().left + width / 2;
+    });
+
+    resizeObserver.observe(this.elementRef.nativeElement);
+
     const rotate$ = fromEvent<MouseEvent>(
       this.elementRef.nativeElement,
       'mouseenter',
@@ -24,7 +34,7 @@ export class TiltDirective {
     );
 
     merge(rotate$, reset$).subscribe((rotate) => {
-      this.rotate = rotate;
+      this.rotate.set(rotate);
     });
   }
 
@@ -42,9 +52,6 @@ export class TiltDirective {
    * returns 0 if entered from left, 1 if entered from right
    */
   determineDirection(pos: number): 0 | 1 {
-    const width = this.elementRef.nativeElement.clientWidth;
-    const middle =
-      this.elementRef.nativeElement.getBoundingClientRect().left + width / 2;
-    return pos > middle ? 1 : 0;
+    return pos > this.middle ? 1 : 0;
   }
 }
